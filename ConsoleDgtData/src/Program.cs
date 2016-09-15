@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,8 @@ namespace ConsoleDgtData
         {
             try
             {
-                string filename = args[0];
-                if (string.IsNullOrWhiteSpace(filename))
+                string filename = (args.Length > 0) ? args[0] : null;
+                if (string.IsNullOrWhiteSpace(filename) || !File.Exists(filename))
                 {
                     Console.WriteLine("Uso: app nombreDeFichero");
                     return;
