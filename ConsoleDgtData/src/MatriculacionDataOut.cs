@@ -8,7 +8,7 @@ using FileHelpers;
 namespace ConsoleDgtData
 {
     [DelimitedRecord(";")]
-    public class MatrinculacionDataOut
+    public class MatriculacionDataOut
     {
         public string FecMatricula;
         public string CodClaseMat;
