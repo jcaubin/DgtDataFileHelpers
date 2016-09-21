@@ -13,10 +13,10 @@ namespace ConsoleDgtData
         [Option('f', "file", Required = true, HelpText = "Fichero a procesar.")]
         public string FileName { get; set; }
 
-        [Option('t', HelpText ="Tipo de fichero matriculas o bajas (m o b)", Required =false)]
+        [Option('t', HelpText ="Tipo de fichero matriculas o bajas.", Required =false)]
         public TipoFichero? TipoFichero { get; set; }
 
-        [Option('m', HelpText = "Filtro nombre de marca", Required = false)]
+        [Option('m', HelpText = "Filtro nombre de marca.", Required = false)]
         public string Marca { get; set; }
 
         [HelpOption]
