@@ -66,6 +66,8 @@
     <Compile Include="src\MatriculacionDataOut.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\VehicInputData.cs" />
+    <Compile Include="src\VehicOutputData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

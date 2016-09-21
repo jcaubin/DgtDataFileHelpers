@@ -16,13 +16,14 @@ namespace ConsoleDgtData
         [Option('t', HelpText ="Tipo de fichero matriculas o bajas (m o b)", Required =false)]
         public TipoFichero? TipoFichero { get; set; }
 
+        [Option('m', HelpText = "Filtro nombre de marca", Required = false)]
+        public string Marca { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
             var help = new HelpText();
-
-
-            help.AddPreOptionsLine("Utilizacion: consoledgtdata -f fichero -t tipo");
+            help.AddPreOptionsLine("Utilizacion: consoledgtdata -f fichero -t tipo -m marca");
             help.AddOptions(this);
             return help;
         }
