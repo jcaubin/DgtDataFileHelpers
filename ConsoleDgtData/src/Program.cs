@@ -61,9 +61,11 @@ namespace ConsoleDgtData
 
                 //escritura
                 var outEngine = new FileHelperEngine<TOutput>();
+                var outFileName = filename + (string.IsNullOrWhiteSpace(filtroMarca) ? "" : ".") + filtroMarca + ".converted.csv";
                 outEngine.HeaderText = engine.GetFileHeader().Replace('\t', ';');
-                outEngine.WriteFile(filename + filtroMarca + ".converted.csv", s);
-                Console.WriteLine("Proceso terminado.");
+                outEngine.WriteFile(outFileName, s);
+                Console.WriteLine("Proceso terminado. ");
+                Console.WriteLine("Fichero de salida:  {0}", outFileName);
             }
             catch (Exception e)
             {
