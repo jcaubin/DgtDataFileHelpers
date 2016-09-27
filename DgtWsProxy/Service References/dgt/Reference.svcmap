@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="91fc4059-29f6-4063-ac36-b166b0b5a2d6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://sedeapl.dgt.gob.es:8080/WS_IEST_COMP/descargaArchivoMicrodatosService?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="descargaArchivoMicrodatosService.wsdl" MetadataType="Wsdl" ID="914bc280-5c68-4a39-a9c2-05133dc068e3" SourceId="1" SourceUrl="https://sedeapl.dgt.gob.es:8080/WS_IEST_COMP/descargaArchivoMicrodatosService?wsdl" />
+    <MetadataFile FileName="descargaArchivoMicrodatosService.xsd" MetadataType="Schema" ID="aca7f54c-48b2-49c6-8b05-4738e4bd9feb" SourceId="1" SourceUrl="https://sedeapl.dgt.gob.es:8080/WS_IEST_COMP/descargaArchivoMicrodatosService.xsd2.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

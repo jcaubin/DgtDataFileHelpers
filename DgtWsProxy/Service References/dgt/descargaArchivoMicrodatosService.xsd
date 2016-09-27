@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://www.dgt.es/iest/microdatos/descargas/schema" targetNamespace="http://www.dgt.es/iest/microdatos/descargas/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Filtro">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Categoria" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Subcategoria" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Fecha" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MultiParte">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="NombreFichero" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Fragmento" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="NumTotalFragmentos" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TamanoFichero" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IdentificadorRespuesta">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="idRespuesta" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="filtro" type="Filtro" />
+      <xs:element minOccurs="1" maxOccurs="1" name="multiParte" type="MultiParte" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Estado">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="codigoEstado" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="literalError" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Peticion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="filtro" type="Filtro" />
+        <xs:element minOccurs="0" maxOccurs="1" name="multiParte" type="MultiParte" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Respuesta">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="identificadorRespuesta" type="IdentificadorRespuesta" />
+        <xs:element minOccurs="1" maxOccurs="1" name="estado" type="Estado" />
+        <xs:element minOccurs="0" maxOccurs="1" name="datosSalida" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
