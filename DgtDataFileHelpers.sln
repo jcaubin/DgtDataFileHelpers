@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgtWsProxy", "DgtWsProxy\DgtWsProxy.csproj", "{4CC62795-4934-4316-A4D3-29DE8EADACC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgtWsProxyTests", "DgtWsProxyTests\DgtWsProxyTests.csproj", "{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{4CC62795-4934-4316-A4D3-29DE8EADACC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CC62795-4934-4316-A4D3-29DE8EADACC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CC62795-4934-4316-A4D3-29DE8EADACC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
