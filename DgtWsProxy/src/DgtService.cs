@@ -34,8 +34,8 @@ namespace DgtWsProxy
             {
                 Peticion pet = req.Map();
                 Respuesta dr = _proxy.descargaArchivoMicrodatos(pet);
-
                 DgtResponse resp = new DgtWsProxy.DgtResponse();
+                resp.MapFrom(dr);              
                 return resp;
             }
             catch (System.ServiceModel.CommunicationException e)

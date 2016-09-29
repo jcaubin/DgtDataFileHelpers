@@ -22,5 +22,24 @@ namespace DgtWsProxy
             };
             return pt;
         }
+
+        public static DgtResponse MapFrom(this DgtResponse dgtr, Respuesta r)
+        {
+            if (r.estado.codigoEstado == "0000" && r?.identificadorRespuesta?.multiParte?.NumTotalFragmentos == "1")
+            {
+                dgtr.State = DgtResponseState.Ok;
+                dgtr.FileName = r.identificadorRespuesta.multiParte.NombreFichero;
+                dgtr.FileContent = r.datosSalida;
+            }
+            else if (r.estado.codigoEstado == "0000")
+            {
+                dgtr.State = DgtResponseState.BadRequest;
+            }
+            else
+            {
+                dgtr.State = DgtResponseState.BadRequest;
+            }
+            return dgtr;
+        }
     }
 }

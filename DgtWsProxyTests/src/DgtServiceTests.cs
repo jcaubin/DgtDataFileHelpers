@@ -18,7 +18,7 @@ namespace DgtWsProxy.Tests
             DgtRequest req = new DgtRequest() { FileType = DgtSubcategory.Bajas, FileDate = new DateTime(2016, 09, 25) };
             var resp = s.GetDgtMicrodatos(req);
 
-            Assert.Inconclusive();
+            Assert.AreEqual(DgtResponseState.Ok, resp.State);
         }
     }
 }
