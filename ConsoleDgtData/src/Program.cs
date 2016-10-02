@@ -25,6 +25,7 @@ namespace ConsoleDgtData
                         Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
                         break;
                     default:
+                        Console.WriteLine("Opciones no validas");
                         break;
                 }
             }
