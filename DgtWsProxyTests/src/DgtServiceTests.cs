@@ -42,8 +42,8 @@ namespace DgtWsProxy.Tests
                 var r2 = s.GetDgtMicrodatos(new DgtRequest() { FileType = DgtSubcategory.Matriculaciones, FileDate = date });
                 if (r2.State == DgtResponseState.Ok)
                 {
-                    File.WriteAllText(r2.FileName, r2.FileContent);
-                    File.AppendAllText("septiembreDemo.txt", r2.FileContent);
+                    File.WriteAllText(r2.FileName, r2.FileContent, Encoding.Default);
+                    File.AppendAllText("septiembreDemo.txt", r2.FileContent, Encoding.Default);
                 }
             }
         }
@@ -66,8 +66,8 @@ namespace DgtWsProxy.Tests
                 var r2 = s.GetDgtMicrodatos(new DgtRequest() { FileType = DgtSubcategory.Bajas, FileDate = date });
                 if (r2.State == DgtResponseState.Ok)
                 {
-                    File.WriteAllText(r2.FileName, r2.FileContent);
-                    File.AppendAllText("septiembreBajasProv.txt", r2.FileContent);
+                    File.WriteAllText(r2.FileName, r2.FileContent, Encoding.Default);
+                    File.AppendAllText("septiembreBajasProv.txt", r2.FileContent, Encoding.Default);
                 }
             }
         }
@@ -83,8 +83,8 @@ namespace DgtWsProxy.Tests
                 var r2 = s.GetDgtMicrodatos(new DgtRequest() { FileType = DgtSubcategory.Transferencias, FileDate = date });
                 if (r2.State == DgtResponseState.Ok)
                 {
-                    File.WriteAllText(r2.FileName, r2.FileContent);
-                    File.AppendAllText("septiembreTransferenciasProv.txt", r2.FileContent);
+                    File.WriteAllText(r2.FileName, r2.FileContent, Encoding.Default);
+                    File.AppendAllText("septiembreTransferenciasProv.txt", r2.FileContent, Encoding.Default);
                 }
             }
         }
