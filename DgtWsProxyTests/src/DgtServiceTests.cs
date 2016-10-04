@@ -71,5 +71,22 @@ namespace DgtWsProxy.Tests
                 }
             }
         }
+
+        [TestMethod()]
+        public void GetDgtMicrodatosTest4()
+        {
+            DgtService s = new DgtService();
+            DateTime begin = new DateTime(2016, 09, 01);
+            DateTime end = new DateTime(2016, 09, 30);
+            for (DateTime date = begin; date <= end; date = date.AddDays(1))
+            {
+                var r2 = s.GetDgtMicrodatos(new DgtRequest() { FileType = DgtSubcategory.Transferencias, FileDate = date });
+                if (r2.State == DgtResponseState.Ok)
+                {
+                    File.WriteAllText(r2.FileName, r2.FileContent);
+                    File.AppendAllText("septiembreTransferenciasProv.txt", r2.FileContent);
+                }
+            }
+        }
     }
 }
