@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using ConsoleDgtData.DAL;
 using FileHelpers;
 
 namespace ConsoleDgtData
@@ -38,7 +40,7 @@ namespace ConsoleDgtData
             }
         }
 
-        private static void Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
+        public static void Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
         {
             try
             {
@@ -70,6 +72,44 @@ namespace ConsoleDgtData
                 outEngine.WriteFile(outFileName, s);
                 Console.WriteLine("Proceso terminado. ");
                 Console.WriteLine("Fichero de salida:  {0}", outFileName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error en el proceso: {0}", e.Message);
+            }
+        }
+
+        public static void Load<TInput>(string filename, string filtroMarca = "") where TInput : VehicInputData
+        {
+            try
+            {
+                //lectura
+                Console.WriteLine("Procesando {0}.", filename);
+                var engine = new FileHelperEngine<TInput>();
+                var result = engine.ReadFile(filename);
+
+                //Filtro
+                if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
+
+                //transformacion
+                CodPropulsion codPropulsionMap = new CodPropulsion();
+                CodServicio codServicioMap = new CodServicio();
+                CodBaja codBajaMap = new CodBaja();
+                foreach (var item in result)
+                {
+                    item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
+                    item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
+                    item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
+                }
+                Mapper.Initialize(cfg => cfg.CreateMap<TInput, VehicleData>());
+                var s = result.Select(r => Mapper.Map<VehicleData>(r));
+
+                //ALmacenamiento en BBDD
+                using (RegistroDgtContext context = new DAL.RegistroDgtContext())
+                {
+                    context.Registros.AddRange(s);
+                    context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
