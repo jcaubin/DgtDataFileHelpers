@@ -24,6 +24,9 @@ namespace ConsoleDgtData
                     case TipoFichero.bajas:
                         Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
                         break;
+                    case TipoFichero.transferencias:
+                        Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                        break;
                     default:
                         Console.WriteLine("Opciones no validas");
                         break;

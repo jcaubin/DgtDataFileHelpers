@@ -32,7 +32,8 @@ namespace ConsoleDgtData
     public enum TipoFichero
     {
         matriculas,
-        bajas
+        bajas,
+        transferencias
     }
 
 }
