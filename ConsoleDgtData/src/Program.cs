@@ -40,7 +40,7 @@ namespace ConsoleDgtData
             }
         }
 
-        public static void Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
+        public static int Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
         {
             try
             {
@@ -72,14 +72,16 @@ namespace ConsoleDgtData
                 outEngine.WriteFile(outFileName, s);
                 Console.WriteLine("Proceso terminado. ");
                 Console.WriteLine("Fichero de salida:  {0}", outFileName);
+                return s.Count();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error en el proceso: {0}", e.Message);
+                return 0;
             }
         }
 
-        public static void Load<TInput>(string filename, string filtroMarca = "") where TInput : VehicInputData
+        public static int Load<TInput>(string filename, string filtroMarca = "") where TInput : VehicInputData
         {
             try
             {
@@ -91,30 +93,46 @@ namespace ConsoleDgtData
                 //Filtro
                 if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
 
-                //transformacion
-                CodPropulsion codPropulsionMap = new CodPropulsion();
-                CodServicio codServicioMap = new CodServicio();
-                CodBaja codBajaMap = new CodBaja();
-                foreach (var item in result)
-                {
-                    item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
-                    item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
-                    item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
-                }
-                Mapper.Initialize(cfg => cfg.CreateMap<TInput, VehicleData>());
-                var s = result.Select(r => Mapper.Map<VehicleData>(r));
+                ////transformacion
+                //CodPropulsion codPropulsionMap = new CodPropulsion();
+                //CodServicio codServicioMap = new CodServicio();
+                //CodBaja codBajaMap = new CodBaja();
+                //foreach (var item in result)
+                //{
+                //    item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
+                //    item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
+                //    item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
+                //}
 
-                //ALmacenamiento en BBDD
+
+                Mapper.Initialize(cfg => cfg.CreateMap<TInput, VehicleData>());
+                //var s = (result.Select(r => Mapper.Map<VehicleData>(r))).ToList();
+                //s.ForEach(c => { c.TipoFichero = TipoFichero.matriculas; c.NombreFichero = filename; });
+
+                var s = (result.Select(r => Mapper.Map<VehicleData>(r)));
+                s = s.Select(q =>  MapV(q, TipoFichero.matriculas, filename) );
+
                 using (RegistroDgtContext context = new DAL.RegistroDgtContext())
                 {
                     context.Registros.AddRange(s);
-                    context.SaveChanges();
+                    var nc = context.SaveChanges();
+                    return nc;
                 }
+
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error en el proceso: {0}", e.Message);
+                return 0;
             }
         }
+
+        private static VehicleData MapV(VehicleData vo, TipoFichero tf, string NombreFichero)
+        {
+            vo.TipoFichero = TipoFichero.matriculas;
+            vo.NombreFichero = NombreFichero;
+            return vo;
+        }
+
     }
 }

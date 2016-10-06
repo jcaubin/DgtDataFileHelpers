@@ -17,6 +17,10 @@ namespace ConsoleDgtData.DAL
 
         public DbSet<VehicleData> Registros { get; set; }
 
+        public DbSet<ClaseMat> ClaseMatriculas { get; set; }
+
+        public DbSet<ProcedenciaItv> Procedencias { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

@@ -12,25 +12,20 @@ namespace ConsoleDgtData
     /// </summary>
     public class VehicleData
     {
-        /// <summary>
-        /// Clave interna del registro
-        /// </summary>
+        [Key]
         public int Id { get; set; }
 
-        /// <summary>
-        /// Tipo de fichero del que procede el dato
-        /// </summary>
-        public TipoFichero? TipoFicheroOrigen { get; set; }
+        public TipoFichero? TipoFichero { get; set; }
 
-        /// <summary>
-        /// Nombre del fichero del que procede
-        /// </summary>
+        [MaxLength(250)]
         public string NombreFichero { get; set; }
 
         /// <summary>
         /// Fecha de matriculación del vehículos
         /// </summary>
+
         public DateTime? FecMatricula { get; set; }
+
 
         /// <summary>
         /// Código de clase de matrícula
@@ -42,6 +37,7 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha de tramitación, que se corresponde con la fecha de transferencia del vehículo contenida en los datos de transferencias.
         /// </summary>
+
         public DateTime? FecTramitacion { get; set; }
 
 
@@ -88,20 +84,6 @@ namespace ConsoleDgtData
 
 
         /// <summary>
-        /// Fecha de la primera matriculación del vehículo.
-        /// </summary>
-
-        public DateTime? FecPrimMatriculacion { get; set; }
-
-
-        /// <summary>
-        /// Fecha en la que grabo el proceso de la operación (matriculación, baja o transferencia)
-        /// </summary>
-
-        public DateTime? FecProceso { get; set; }
-
-
-        /// <summary>
         /// Cilindrada del  vehículo
         /// </summary>
 
@@ -123,6 +105,20 @@ namespace ConsoleDgtData
 
 
         /// <summary>
+        /// Peso máximo del vehículo
+        /// </summary>
+
+        public decimal? PesoMax { get; set; }
+
+
+        /// <summary>
+        /// Número de plazas de un vehículo. Para un vehículo de carga, este campo indicará el número de plazas máximo permitido cuando el vehículo está descargado.
+        /// </summary>
+
+        public int? NumPlazasItv { get; set; }
+
+
+        /// <summary>
         /// Indicador de vehículo precintado
         /// </summary>
         [MaxLength(2)]
@@ -137,17 +133,17 @@ namespace ConsoleDgtData
 
 
         /// <summary>
-        /// Peso máximo del vehículo
+        /// Número de transmisiones que ha tenido el vehículo
         /// </summary>
 
-        public decimal? PesoMax { get; set; }
+        public int? NumTransmisiones { get; set; }
 
 
         /// <summary>
-        /// Potencia neta máxima en KW)
+        /// Número de titulares del vehículo
         /// </summary>
 
-        public decimal? KwItv { get; set; }
+        public int? NumTitulares { get; set; }
 
 
         /// <summary>
@@ -186,17 +182,17 @@ namespace ConsoleDgtData
 
 
         /// <summary>
-        /// Número de plazas de un vehículo. Para un vehículo de carga, este campo indicará el número de plazas máximo permitido cuando el vehículo está descargado.
+        /// Código postal donde está domiciliado el vehículo
         /// </summary>
 
-        public int? NumPlazasItv { get; set; }
+        public int? CodigoPostal { get; set; }
 
 
         /// <summary>
-        /// Número de transmisiones que ha tenido el vehículo
+        /// Fecha de la primera matriculación del vehículo.
         /// </summary>
 
-        public int? NumTransmisiones { get; set; }
+        public DateTime? FecPrimMatriculacion { get; set; }
 
 
         /// <summary>
@@ -228,10 +224,10 @@ namespace ConsoleDgtData
 
 
         /// <summary>
-        /// Número de titulares del vehículo
+        /// Código INE del municipio del domicilio del vehículo
         /// </summary>
 
-        public int? NumTitulares { get; set; }
+        public int? CodMunicipioIneVeh { get; set; }
 
 
         /// <summary>
@@ -242,17 +238,10 @@ namespace ConsoleDgtData
 
 
         /// <summary>
-        /// Código postal donde está domiciliado el vehículo
+        /// Potencia neta máxima en KW)
         /// </summary>
 
-        public int? CodigoPostal { get; set; }
-
-
-        /// <summary>
-        /// Código INE del municipio del domicilio del vehículo
-        /// </summary>
-
-        public int? CodMunicipioIneVeh { get; set; }
+        public decimal? KwItv { get; set; }
 
 
         /// <summary>
@@ -260,6 +249,13 @@ namespace ConsoleDgtData
         /// </summary>
 
         public int? NumPlazasMax { get; set; }
+
+
+        /// <summary>
+        /// Emisiones CO2.
+        /// </summary>
+
+        public int? Co2Itv { get; set; }
 
 
         /// <summary>
@@ -342,15 +338,15 @@ namespace ConsoleDgtData
         /// <summary>
         /// Masa en orden de marcha
         /// </summary>
-        [MaxLength(6)]
-        public string MasaOrdenMarchaItv { get; set; }
+
+        public int? MasaOrdenMarchaItv { get; set; }
 
 
         /// <summary>
         /// Masa máxima técnicamente admisible
         /// </summary>
-        [MaxLength(6)]
-        public string MasaMáximaTecnicaAdmisibleItv { get; set; }
+
+        public int? MasaMáximaTecnicaAdmisibleItv { get; set; }
 
 
         /// <summary>
@@ -370,8 +366,8 @@ namespace ConsoleDgtData
         /// <summary>
         /// Número plazas de pié
         /// </summary>
-        [MaxLength(3)]
-        public string PlazasPie { get; set; }
+
+        public int? PlazasPie { get; set; }
 
 
         /// <summary>
@@ -422,11 +418,13 @@ namespace ConsoleDgtData
         [MaxLength(50)]
         public string FabricanteVehículoBase { get; set; }
 
+
         /// <summary>
         ///  Tipo del vehículo base
         /// </summary>
         [MaxLength(35)]
         public string TipoVehículoBase { get; set; }
+
 
         /// <summary>
         /// Variante del vehículo base
@@ -441,11 +439,13 @@ namespace ConsoleDgtData
         [MaxLength(35)]
         public string VersiónVehículoBase { get; set; }
 
+
         /// <summary>
         /// Distancia entre ejes 1-2
         /// </summary>
         [MaxLength(4)]
         public string DistanciaEjes12Itv { get; set; }
+
 
         /// <summary>
         /// En mm.
@@ -453,11 +453,13 @@ namespace ConsoleDgtData
         [MaxLength(4)]
         public string ViaAnteriorItv { get; set; }
 
+
         /// <summary>
         /// En mm.
         /// </summary>
         [MaxLength(4)]
         public string ViaPosteriorItv { get; set; }
+
 
         /// <summary>
         /// M= monocombustible. B= bicombustible F= flexicombustiblel.
@@ -465,11 +467,13 @@ namespace ConsoleDgtData
         [MaxLength(1)]
         public string TipoAlimentacionItv { get; set; }
 
+
         /// <summary>
         /// Contraseña de homologación.
         /// </summary>
         [MaxLength(25)]
         public string ContraseñaHomologacionItv { get; set; }
+
 
         /// <summary>
         /// S= SI, N= NO. A la espera de definir por UE, hasta entonces se deja en blanco.
@@ -477,11 +481,13 @@ namespace ConsoleDgtData
         [MaxLength(1)]
         public string EcoInnovacionItv { get; set; }
 
+
         /// <summary>
         /// A la espera de definir por UE, hasta entonces se deba en blanco.
         /// </summary>
         [MaxLength(4)]
         public string ReduccionEcoItv { get; set; }
+
 
         /// <summary>
         /// A la espera de definir por UE, hasta entonces se deba en blanco.
@@ -489,9 +495,13 @@ namespace ConsoleDgtData
         [MaxLength(25)]
         public string CodigoEcoItv { get; set; }
 
+
         /// <summary>
-        /// Emisiones CO2.
+        /// Fecha en la que grabo el proceso de la operación (matriculación, baja o transferencia)
         /// </summary>
-        public int? Co2Itv { get; set; }
+
+        public DateTime? FecProceso { get; set; }
+
+
     }
 }

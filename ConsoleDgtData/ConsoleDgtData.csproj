@@ -70,11 +70,13 @@
   <ItemGroup>
     <Compile Include="src\BajaData.cs" />
     <Compile Include="src\BajaDataOut.cs" />
+    <Compile Include="src\ClaseMatricula.cs" />
     <Compile Include="src\CmOptions.cs" />
     <Compile Include="src\CodBaja.cs" />
     <Compile Include="src\CodServicio.cs" />
     <Compile Include="src\CodPropulsion.cs" />
     <Compile Include="src\DAL\RegistroDgtContext.cs" />
+    <Compile Include="src\DAL\RegistroDgtInitializer.cs" />
     <Compile Include="src\Enums.cs" />
     <Compile Include="src\MatriculacionData.cs" />
     <Compile Include="src\MatriculacionDataOut.cs" />

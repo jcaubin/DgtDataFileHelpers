@@ -14,8 +14,15 @@ namespace ConsoleDgtData.Tests
         [TestMethod()]
         public void LoadTest()
         {
-            Program.Load<MatriculacionData>(@"E:\NET\Proyectos\DgtData\export_mensual_mat_201607.txt");
-            Assert.Inconclusive();
+            var r = Program.Load<MatriculacionData>(@"E:\NET\Proyectos\DgtData\export_mat_20160905.txt");
+            Assert.IsTrue(r>0);
+        }
+
+        [TestMethod()]
+        public void ProcessTest()
+        {
+            var r = Program.Process<MatriculacionData, MatriculacionDataOut>(@"E:\NET\Proyectos\DgtData\export_mat_20160905.txt");
+            Assert.IsTrue(r > 0);
         }
     }
 }
