@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ConsoleDgtData.DAL;
 using FileHelpers;
+using EntityFramework.BulkInsert.Extensions;
 
 namespace ConsoleDgtData
 {
@@ -15,28 +16,35 @@ namespace ConsoleDgtData
     {
         static void Main(string[] args)
         {
-            var options = new CmOptions();
-            if (CommandLine.Parser.Default.ParseArguments(args, options))
+            try
             {
-                switch (options.TipoFichero)
+                var options = new CmOptions();
+                if (CommandLine.Parser.Default.ParseArguments(args, options))
                 {
-                    case TipoFichero.matriculas:
-                        Process<MatriculacionData, MatriculacionDataOut>(options.FileName, options.Marca);
-                        break;
-                    case TipoFichero.bajas:
-                        Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
-                        break;
-                    case TipoFichero.transferencias:
-                        Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
-                        break;
-                    default:
-                        Console.WriteLine("Opciones no validas");
-                        break;
+                    switch (options.TipoFichero)
+                    {
+                        case TipoFichero.matriculas:
+                            Process<MatriculacionData, MatriculacionDataOut>(options.FileName, options.Marca);
+                            break;
+                        case TipoFichero.bajas:
+                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            break;
+                        case TipoFichero.transferencias:
+                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            break;
+                        default:
+                            Console.WriteLine("Opciones no validas");
+                            break;
+                    }
+                }
+                else
+                {
+                    return;
                 }
             }
-            else
+            catch (Exception e)
             {
-                return;
+                Console.WriteLine("Error en el procesamiento: {0};", e.Message);
             }
         }
 
@@ -52,7 +60,7 @@ namespace ConsoleDgtData
                 //Filtro
                 if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
 
-                //transformacion
+                //Decodicficacion
                 CodPropulsion codPropulsionMap = new CodPropulsion();
                 CodServicio codServicioMap = new CodServicio();
                 CodBaja codBajaMap = new CodBaja();
@@ -77,14 +85,16 @@ namespace ConsoleDgtData
             catch (Exception e)
             {
                 Console.WriteLine("Error en el proceso: {0}", e.Message);
-                return 0;
+                throw;
+                //return 0;
             }
         }
 
-        public static int Load<TInput>(string filename, string filtroMarca = "") where TInput : VehicInputData
+        public static int Load<TInput>(string filename, TipoFichero? tipoFichero, string filtroMarca = "") where TInput : VehicInputData
         {
             try
             {
+
                 //lectura
                 Console.WriteLine("Procesando {0}.", filename);
                 var engine = new FileHelperEngine<TInput>();
@@ -93,43 +103,31 @@ namespace ConsoleDgtData
                 //Filtro
                 if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
 
-                ////transformacion
-                //CodPropulsion codPropulsionMap = new CodPropulsion();
-                //CodServicio codServicioMap = new CodServicio();
-                //CodBaja codBajaMap = new CodBaja();
-                //foreach (var item in result)
-                //{
-                //    item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
-                //    item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
-                //    item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
-                //}
-
 
                 Mapper.Initialize(cfg => cfg.CreateMap<TInput, VehicleData>());
-                //var s = (result.Select(r => Mapper.Map<VehicleData>(r))).ToList();
-                //s.ForEach(c => { c.TipoFichero = TipoFichero.matriculas; c.NombreFichero = filename; });
 
                 var s = (result.Select(r => Mapper.Map<VehicleData>(r)));
-                s = s.Select(q =>  MapV(q, TipoFichero.matriculas, filename) );
+                s = s.Select(q => MapV(q, tipoFichero, filename));
+
 
                 using (RegistroDgtContext context = new DAL.RegistroDgtContext())
                 {
-                    context.Registros.AddRange(s);
-                    var nc = context.SaveChanges();
-                    return nc;
+                    context.BulkInsert<VehicleData>(s);
+                    return 1;
                 }
 
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error en el proceso: {0}", e.Message);
-                return 0;
+                throw;
+                // return 0;
             }
         }
 
-        private static VehicleData MapV(VehicleData vo, TipoFichero tf, string NombreFichero)
+        private static VehicleData MapV(VehicleData vo, TipoFichero? tf, string NombreFichero)
         {
-            vo.TipoFichero = TipoFichero.matriculas;
+            vo.TipoFichero = tf;
             vo.NombreFichero = NombreFichero;
             return vo;
         }

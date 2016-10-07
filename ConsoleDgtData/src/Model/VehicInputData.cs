@@ -26,7 +26,7 @@ namespace ConsoleDgtData
         /// </summary>
         [FieldFixedLength(1)]
         [FieldTrim(TrimMode.Both)]
-        public string CodClaseMat;
+        public int? CodClaseMat;
 
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace ConsoleDgtData
         /// </summary>
         [FieldFixedLength(1)]
         [FieldTrim(TrimMode.Both)]
-        public string CodProcedenciaItv;
+        public int? CodProcedenciaItv;
 
 
         /// <summary>
@@ -266,6 +266,7 @@ namespace ConsoleDgtData
         /// </summary>
         [FieldFixedLength(7)]
         [FieldTrim(TrimMode.Both)]
+        [FieldConverter(typeof(ConsoleDgtData.Converters.KwConverter))]
         public decimal? KwItv;
 
 
@@ -429,7 +430,7 @@ namespace ConsoleDgtData
         public string ConsumowhKmItv;
 
 
-  /// <summary>
+        /// <summary>
         ///  Clasificación Anexo II RD 2822
         /// </summary>
         [FieldFixedLength(4)]

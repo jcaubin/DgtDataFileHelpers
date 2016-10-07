@@ -29,11 +29,6 @@ namespace ConsoleDgtData
         }
     }
 
-    public enum TipoFichero
-    {
-        matriculas,
-        bajas,
-        transferencias
-    }
+
 
 }

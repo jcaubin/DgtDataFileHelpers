@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleDgtData.DAL
 {
-    public class RegistroDgtInitializer : DropCreateDatabaseAlways<RegistroDgtContext>
+    public class RegistroDgtInitializer : CreateDatabaseIfNotExists<RegistroDgtContext>
     {
         protected override void Seed(RegistroDgtContext context)
         {

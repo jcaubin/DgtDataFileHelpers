@@ -45,6 +45,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.BulkInsert-ef6.6.0.2.8\lib\Net45\EntityFramework.BulkInsert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MappingAPI.6.0.0.7\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -68,23 +76,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\BajaData.cs" />
-    <Compile Include="src\BajaDataOut.cs" />
-    <Compile Include="src\ClaseMatricula.cs" />
+    <Compile Include="src\Converters\KwConverter.cs" />
+    <Compile Include="src\Model\BajaData.cs" />
+    <Compile Include="src\Model\BajaDataOut.cs" />
+    <Compile Include="src\Model\ClaseMatricula.cs" />
     <Compile Include="src\CmOptions.cs" />
-    <Compile Include="src\CodBaja.cs" />
-    <Compile Include="src\CodServicio.cs" />
-    <Compile Include="src\CodPropulsion.cs" />
+    <Compile Include="src\Model\CodBaja.cs" />
+    <Compile Include="src\Model\CodServicio.cs" />
+    <Compile Include="src\Model\CodPropulsion.cs" />
     <Compile Include="src\DAL\RegistroDgtContext.cs" />
     <Compile Include="src\DAL\RegistroDgtInitializer.cs" />
-    <Compile Include="src\Enums.cs" />
-    <Compile Include="src\MatriculacionData.cs" />
-    <Compile Include="src\MatriculacionDataOut.cs" />
+    <Compile Include="src\Model\Enums.cs" />
+    <Compile Include="src\Model\MatriculacionData.cs" />
+    <Compile Include="src\Model\MatriculacionDataOut.cs" />
+    <Compile Include="src\Model\TipoFichero.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\VehicleData.cs" />
-    <Compile Include="src\VehicInputData.cs" />
-    <Compile Include="src\VehicOutputData.cs" />
+    <Compile Include="src\Model\VehicleData.cs" />
+    <Compile Include="src\Model\VehicInputData.cs" />
+    <Compile Include="src\Model\VehicOutputData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

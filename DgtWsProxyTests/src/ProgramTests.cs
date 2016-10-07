@@ -12,10 +12,33 @@ namespace ConsoleDgtData.Tests
     public class ProgramTests
     {
         [TestMethod()]
-        public void LoadTest()
+        public void LoadTestMatriculaciones()
         {
-            var r = Program.Load<MatriculacionData>(@"E:\NET\Proyectos\DgtData\export_mat_20160905.txt");
-            Assert.IsTrue(r>0);
+            string path;
+            path = @"E:\NET\Proyectos\DgtData\septiembreMatriculacionesProv.txt";
+            var r = Program.Load<MatriculacionData>(path, TipoFichero.matriculas);
+
+            Assert.IsTrue(r > 0);
+        }
+
+        [TestMethod()]
+        public void LoadTestTransfer()
+        {
+            string path;
+            path = @"E:\NET\Proyectos\DgtData\septiembreTransferenciasProv.txt";
+            var r = Program.Load<MatriculacionData>(path, TipoFichero.transferencias);
+
+            Assert.IsTrue(r > 0);
+        }
+
+        [TestMethod()]
+        public void LoadTestBajas()
+        {
+            string path;
+            path = @"E:\NET\Proyectos\DgtData\septiembreBajasProv.txt";
+            var r = Program.Load<MatriculacionData>(path, TipoFichero.bajas);
+
+            Assert.IsTrue(r > 0);
         }
 
         [TestMethod()]
