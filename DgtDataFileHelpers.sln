@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgtWsProxy", "DgtWsProxy\Dg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgtDataTests", "DgtWsProxyTests\DgtDataTests.csproj", "{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DgtDatabase", "DgtDatabase\DgtDatabase.sqlproj", "{953FA07D-B49F-41FA-8A41-0F397A463D05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,12 @@ Global
 		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD1CB7D-586E-42F7-8DD2-723F32DD73DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953FA07D-B49F-41FA-8A41-0F397A463D05}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
