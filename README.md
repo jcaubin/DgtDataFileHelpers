@@ -1,6 +1,5 @@
 # DgtDataFileHelpers
-Transforma los datos de matriculaciones, bajas y transferenecias  proporcionados por la DGT en su portal estadistico (ficheros de texto de longitudes fijas) 
-a un formato mas manejable (CSV).
+Transforma los datos de matriculaciones, bajas y transferenecias  proporcionados por la DGT en <a href="https://sedeapl.dgt.gob.es/WEB_IEST_CONSULTA/">su portal estadistico</a> (ficheros de texto con formato de campos de longitud fija) a un formato mas manejable (CSV, fichero de texto con campos separados por comas).
 
 Uso:
 <ol>
