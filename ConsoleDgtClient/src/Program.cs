@@ -1,4 +1,5 @@
-﻿using DgtWsProxy;
+﻿using CommandLine;
+using DgtWsProxy;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -17,33 +18,44 @@ namespace ConsoleDgtClient
         {
             try
             {
-                var options = new ClientArgs();
-                if (CommandLine.Parser.Default.ParseArguments(args, options))
+                try
                 {
-                    switch (options.TipoFichero)
-                    {
-                        case TipoFichero.matriculas:
-                            DownloadMatriculaciones(options.Begin, options.End);
-                            break;
-                        case TipoFichero.bajas:
-                            DownloadBajas(options.Begin, options.End);
-                            break;
-                        case TipoFichero.transferencias:
-                            DownloadTransferencias(options.Begin, options.End);
-                            break;
-                        default:
-                            Console.WriteLine("Opciones no validas");
-                            break;
-                    }
+                    var result = Parser.Default.ParseArguments<ClientArgs>(args).WithParsed<ClientArgs>(opts => RunOptionsAndReturnExitCode(opts))
+                    .WithNotParsed<ClientArgs>((errs) => HandleParseError(errs));
+
                 }
-                else
+                catch (Exception e)
                 {
-                    return;
-                }
+                    Console.WriteLine("Error en el procesamiento: {0};", e.Message);
+                }               
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void HandleParseError(IEnumerable<Error> errs)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void RunOptionsAndReturnExitCode(ClientArgs options)
+        {
+            switch (options.TipoFichero)
+            {
+                case TipoFichero.matriculas:
+                    DownloadMatriculaciones(options.Begin, options.End);
+                    break;
+                case TipoFichero.bajas:
+                    DownloadBajas(options.Begin, options.End);
+                    break;
+                case TipoFichero.transferencias:
+                    DownloadTransferencias(options.Begin, options.End);
+                    break;
+                default:
+                    Console.WriteLine("Opciones no validas");
+                    break;
             }
         }
 

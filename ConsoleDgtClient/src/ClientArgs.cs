@@ -22,14 +22,14 @@ namespace ConsoleDgtClient
 
 
 
-        [HelpOption]
-        public string GetUsage()
-        {
-            var help = new HelpText();
-            help.AddPreOptionsLine("Utilizacion: ...");
-            help.AddOptions(this);
-            return help;
-        }
+        //[HelpOption]
+        //public string GetUsage()
+        //{
+        //    var help = new HelpText();
+        //    help.AddPreOptionsLine("Utilizacion: ...");
+        //    help.AddOptions(this);
+        //    return help;
+        //}
 
     }
 }
