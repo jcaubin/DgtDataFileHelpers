@@ -20,8 +20,28 @@ namespace ConsoleDgtData
         {
             try
             {
-                var result = Parser.Default.ParseArguments<CmOptions>(args).WithParsed<CmOptions>(opts => RunOptionsAndReturnExitCode(opts))
-                .WithNotParsed<CmOptions>((errs) => HandleParseError(errs));
+                var result = Parser.Default.ParseArguments<CmOptions>(args).WithParsed<CmOptions>(options =>
+                {
+                    switch (options.TipoFichero)
+                    {
+                        case TipoFichero.matriculas:
+                            Process<MatriculacionData, MatriculacionDataOut>(options.FileName, options.Marca);
+                            break;
+                        case TipoFichero.bajas:
+                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            break;
+                        case TipoFichero.transferencias:
+                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            break;
+                        default:
+                            Console.WriteLine("Opciones no validas");
+                            break;
+                    }
+                })
+                .WithNotParsed<CmOptions>((errs) =>
+                {
+                    Console.WriteLine("Error las opciones;");
+                });
 
             }
             catch (Exception e)
@@ -30,37 +50,12 @@ namespace ConsoleDgtData
             }
         }
 
-        private static int HandleParseError(IEnumerable<Error> errs)
-        {
-            return 0;
-        }
-
-        public static int RunOptionsAndReturnExitCode(CmOptions options)
-        {
-            switch (options.TipoFichero)
-            {
-                case TipoFichero.matriculas:
-                    Process<MatriculacionData, MatriculacionDataOut>(options.FileName, options.Marca);
-                    return 1;
-
-                case TipoFichero.bajas:
-                    Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
-                    return 1;
-                case TipoFichero.transferencias:
-                    Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
-                    return 1;
-                default:
-                    Console.WriteLine("Opciones no validas");
-                    return 0;
-            }
-        }
-
         public static int Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
         {
             try
             {
                 Console.WriteLine("Procesando {0}.", filename);
-                
+
                 //descompresion y lectura           
                 ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
                 ZipArchiveEntry entry = archive.Entries[0];

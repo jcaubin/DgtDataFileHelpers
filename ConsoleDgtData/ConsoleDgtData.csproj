@@ -92,7 +92,6 @@
     <Compile Include="src\Model\Enums.cs" />
     <Compile Include="src\Model\MatriculacionData.cs" />
     <Compile Include="src\Model\MatriculacionDataOut.cs" />
-    <Compile Include="src\Model\TipoFichero.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Model\VehicleData.cs" />
