@@ -21,8 +21,10 @@ ConsoleDgtData -t bajas -m ALFA  -f export_mensual_bajas_201608.txt
 
 El resultado es un fichero de texto con la extensión CVS que se puede abrir con Excel o similar para analizar los datos mas comodamente.
 
-Novedades 20180303:
--Entrada de datos en formato zip, no es necesario descomprimir los ficheros originales
--Salida en formato csv (texto) o zip
--Admite comodines en el nombre del fichero para procesamiento por lotes
+<h3>Novedades 20180303:</h3>
+<ul>
+  <li>Entrada de datos en formato zip, no es necesario descomprimir los ficheros originales</li>
+  <li>Salida en formato csv (texto) o zip</li>
+  <li>Admite comodines en el nombre del fichero para procesamiento por lotes</li>
+ <ul>
 
