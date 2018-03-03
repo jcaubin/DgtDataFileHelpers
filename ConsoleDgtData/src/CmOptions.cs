@@ -17,7 +17,10 @@ namespace ConsoleDgtData
         public TipoFichero TipoFichero { get; set; }
 
         [Option('m', HelpText = "Filtro nombre de marca.", Required = false)]
-        public string Marca { get; set; }
+        public string Marca { get; set; } = string.Empty;
+
+        [Option('o', HelpText = "Tipo fichero de salida csv o zip.", Required = false)]
+        public TipoSalida Salida { get; set; } = TipoSalida.csv;
 
         //[HelpOption]
         //public string GetUsage()
@@ -34,6 +37,12 @@ namespace ConsoleDgtData
         matriculas,
         bajas,
         transferencias
+    }
+
+    public enum TipoSalida
+    {
+        zip,
+        csv
     }
 
 

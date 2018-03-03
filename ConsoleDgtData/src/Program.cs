@@ -25,13 +25,13 @@ namespace ConsoleDgtData
                     switch (options.TipoFichero)
                     {
                         case TipoFichero.matriculas:
-                            Process<MatriculacionData, MatriculacionDataOut>(options.FileName, options.Marca);
+                            Process<MatriculacionData, MatriculacionDataOut>(options);
                             break;
                         case TipoFichero.bajas:
-                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            Process<BajaData, BajaDataOut>(options);
                             break;
                         case TipoFichero.transferencias:
-                            Process<BajaData, BajaDataOut>(options.FileName, options.Marca);
+                            Process<BajaData, BajaDataOut>(options);
                             break;
                         default:
                             Console.WriteLine("Opciones no validas");
@@ -50,43 +50,76 @@ namespace ConsoleDgtData
             }
         }
 
-        public static int Process<TInput, TOutput>(string filename, string filtroMarca = "") where TInput : VehicInputData where TOutput : VehicOutputData
+        public static int Process<TInput, TOutput>(CmOptions options) where TInput : VehicInputData where TOutput : VehicOutputData
         {
             try
             {
-                Console.WriteLine("Procesando {0}.", filename);
-
-                //descompresion y lectura           
-                ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
-                ZipArchiveEntry entry = archive.Entries[0];
-
-                var engine = new FileHelperEngine<TInput>();
-                var result = engine.ReadStream(new StreamReader(entry.Open()));
-
-                //Filtro
-                if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
-
-                //Decodicficacion
-                CodPropulsion codPropulsionMap = new CodPropulsion();
-                CodServicio codServicioMap = new CodServicio();
-                CodBaja codBajaMap = new CodBaja();
-                foreach (var item in result)
-                {
-                    item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
-                    item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
-                    item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
-                }
                 Mapper.Initialize(cfg => cfg.CreateMap<TInput, TOutput>());
-                var s = result.Select(r => Mapper.Map<TOutput>(r));
+                var files = Directory.EnumerateFiles(Path.GetDirectoryName(options.FileName), Path.GetFileName(options.FileName));
 
-                //escritura
-                var outEngine = new FileHelperEngine<TOutput>();
-                var outFileName = filename + (string.IsNullOrWhiteSpace(filtroMarca) ? "" : ".") + filtroMarca + ".converted.csv";
-                outEngine.HeaderText = engine.GetFileHeader().Replace('\t', ';');
-                outEngine.WriteFile(outFileName, s);
-                Console.WriteLine("Proceso terminado. ");
-                Console.WriteLine("Fichero de salida:  {0}", outFileName);
-                return s.Count();
+                foreach (string filename in files)
+                {
+                    string filtroMarca = options.Marca;
+                    Console.WriteLine("Procesando {0}.", filename);
+
+                    //descompresion y lectura           
+                    ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
+                    ZipArchiveEntry entry = archive.Entries[0];
+
+                    var engine = new FileHelperEngine<TInput>();
+                    var result = engine.ReadStream(new StreamReader(entry.Open()));
+
+                    //Filtro
+                    if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
+
+                    //Decodificacion
+                    CodPropulsion codPropulsionMap = new CodPropulsion();
+                    CodServicio codServicioMap = new CodServicio();
+                    CodBaja codBajaMap = new CodBaja();
+                    foreach (var item in result)
+                    {
+                        item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
+                        item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
+                        item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
+                    }
+                    var s = result.Select(r => Mapper.Map<TOutput>(r));
+
+                    //escritura
+                    var outEngine = new FileHelperEngine<TOutput>();
+                    outEngine.HeaderText = engine.GetFileHeader().Replace('\t', ';');
+                    var outFileName = filename + (string.IsNullOrWhiteSpace(filtroMarca) ? "" : ".") + filtroMarca + ".converted.zip";
+                    if (options.Salida == TipoSalida.csv)
+                    {
+                        outFileName = Path.ChangeExtension(outFileName, "csv");
+                        outEngine.WriteFile(outFileName, s);
+                    }
+                    else if (options.Salida == TipoSalida.zip)
+                    {
+                        outFileName = Path.ChangeExtension(outFileName, "zip");
+                        var fileNamePart = Path.GetFileNameWithoutExtension(outFileName) + ".csv";
+                        using (FileStream zipToOpen = new FileStream(outFileName, FileMode.Create))
+                        {
+                            using (ZipArchive za = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                            {
+                                ZipArchiveEntry readmeEntry = za.CreateEntry(fileNamePart);
+                                using (StreamWriter writer = new StreamWriter(readmeEntry.Open(), Encoding.GetEncoding(28591)))
+                                {
+                                    outEngine.WriteStream(writer, s);
+                                }
+                            }
+                        }
+                    }
+
+                    Console.WriteLine("Proceso terminado. ");
+                    Console.WriteLine("Fichero de salida:  {0}", outFileName);
+                }
+                return 1;
+            }
+            catch (ConvertException e)
+            {
+                Console.WriteLine("Error en el proceso: {0}; linea {1}; columna {2};", e.Message, e.LineNumber, e.ColumnNumber);
+                throw;
+                //return 0;
             }
             catch (Exception e)
             {

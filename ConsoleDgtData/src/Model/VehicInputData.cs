@@ -194,7 +194,7 @@ namespace ConsoleDgtData
         /// </summary>
         [FieldFixedLength(8)]
         [FieldTrim(TrimMode.Both)]
-        public string FecTramite;
+        public DateTime? FecTramite;
 
 
         /// <summary>
