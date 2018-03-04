@@ -55,6 +55,9 @@ namespace ConsoleDgtData
             try
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<TInput, TOutput>());
+                var engine = new FileHelperEngine<TInput>();
+                engine.ErrorManager.ErrorMode = ErrorMode.SaveAndContinue;
+
                 var files = Directory.EnumerateFiles(Path.GetDirectoryName(options.FileName), Path.GetFileName(options.FileName));
 
                 foreach (string filename in files)
@@ -66,7 +69,8 @@ namespace ConsoleDgtData
                     ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
                     ZipArchiveEntry entry = archive.Entries[0];
 
-                    var engine = new FileHelperEngine<TInput>();
+                   
+
                     var result = engine.ReadStream(new StreamReader(entry.Open()));
 
                     //Filtro
@@ -113,6 +117,8 @@ namespace ConsoleDgtData
                     Console.WriteLine("Proceso terminado. ");
                     Console.WriteLine("Fichero de salida:  {0}", outFileName);
                 }
+                if (engine.ErrorManager.HasErrors) engine.ErrorManager.SaveErrors("errors.out");
+
                 return 1;
             }
             catch (ConvertException e)
