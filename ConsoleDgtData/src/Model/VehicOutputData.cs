@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileHelpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha de matriculación del vehículos
         /// </summary>
-        public string FecMatricula;
+        [FieldConverter(ConverterKind.Date,  "dd/MM/yyyy")]
+        public DateTime? FecMatricula;
 
         /// <summary>
         /// Código de clase de matrícula
@@ -21,7 +23,8 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha de tramitación, que se corresponde con la fecha de transferencia del vehículo contenida en los datos de transferencias.
         /// </summary>
-        public string FecTramitacion;
+        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
+        public DateTime? FecTramitacion;
 
         /// <summary>
         /// Descripción de la marca del vehículo
@@ -121,7 +124,8 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha en la que se realizó el trámite
         /// </summary>
-        public string FecTramite;
+        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
+        public DateTime? FecTramite;
 
         /// <summary>
         /// Código postal donde está domiciliado el vehículo
@@ -131,7 +135,8 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha de la primera matriculación del vehículo.
         /// </summary>
-        public string FecPrimMatriculacion;
+        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
+        public DateTime? FecPrimMatriculacion;
 
         /// <summary>
         /// Indica si el vehículo es nuevo (N)i o usado (U)  al momento de la matriculación FEC_MATRICULA.  Este campo se calcula en el almacén de datos.
@@ -351,6 +356,12 @@ namespace ConsoleDgtData
         /// <summary>
         /// Fecha en la que grabo el proceso de la operación (matriculación, baja o transferencia)
         /// </summary>
-        public string FecProceso;
+        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
+        public DateTime? FecProceso;
+
+        /// <summary>
+        /// Tipo de proceso de la operación (matriculación, baja o transferencia)
+        /// </summary>
+        public string TipoProceso;
     }
 }

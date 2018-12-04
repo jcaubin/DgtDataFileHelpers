@@ -11,6 +11,7 @@ using FileHelpers;
 using EntityFramework.BulkInsert.Extensions;
 using CommandLine;
 using System.IO.Compression;
+using System.Diagnostics;
 
 namespace ConsoleDgtData
 {
@@ -55,11 +56,16 @@ namespace ConsoleDgtData
             try
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<TInput, TOutput>());
-                var engine = new FileHelperEngine<TInput>();
-                engine.ErrorManager.ErrorMode = ErrorMode.SaveAndContinue;
+                var inputEngine = new FileHelperEngine<TInput>();
+                inputEngine.ErrorManager.ErrorMode = ErrorMode.SaveAndContinue;
 
+                var outputEngine = new DelimitedFileEngine<TOutput>();
+                outputEngine.Options.Delimiter = "\t";
+                outputEngine.HeaderText = outputEngine.GetFileHeader();
+                Stopwatch stopWatch = Stopwatch.StartNew();
+
+                //recorre todos los ficheros que encajan con el patron
                 var files = Directory.EnumerateFiles(Path.GetDirectoryName(options.FileName), Path.GetFileName(options.FileName));
-
                 foreach (string filename in files)
                 {
                     string filtroMarca = options.Marca;
@@ -69,33 +75,41 @@ namespace ConsoleDgtData
                     ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
                     ZipArchiveEntry entry = archive.Entries[0];
 
-                   
+                    //lectura datos de entrada
+                    var inputData = inputEngine.ReadStream(new StreamReader(entry.Open()));
 
-                    var result = engine.ReadStream(new StreamReader(entry.Open()));
-
-                    //Filtro
-                    if (!string.IsNullOrWhiteSpace(filtroMarca)) result = result.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
+                    //Filtro por marca
+                    if (!string.IsNullOrWhiteSpace(filtroMarca)) inputData = inputData.Where(r => r.MarcaItv.Contains(filtroMarca)).ToArray();
 
                     //Decodificacion
                     CodPropulsion codPropulsionMap = new CodPropulsion();
                     CodServicio codServicioMap = new CodServicio();
                     CodBaja codBajaMap = new CodBaja();
-                    foreach (var item in result)
+                    foreach (var item in inputData)
                     {
                         item.CodPropulsionItv = (string.IsNullOrWhiteSpace(item.CodPropulsionItv)) ? "" : codPropulsionMap[item.CodPropulsionItv];
                         item.Servicio = (string.IsNullOrWhiteSpace(item.Servicio)) ? "" : codServicioMap[item.Servicio];
                         item.IndBajaDef = codBajaMap.SingleOrDefault(c => c.Key == item.IndBajaDef).Value;
                     }
-                    var s = result.Select(r => Mapper.Map<TOutput>(r));
+                    //datos de salida
+                    var outputData = inputData.Select(r => Mapper.Map<TOutput>(r)) //conversor
+                        .Select(c => { c.TipoProceso = options.TipoFichero.ToString(); return c; });//establece el tipo de fichero / proceso;
 
                     //escritura
-                    var outEngine = new FileHelperEngine<TOutput>();
-                    outEngine.HeaderText = engine.GetFileHeader().Replace('\t', ';');
                     var outFileName = filename + (string.IsNullOrWhiteSpace(filtroMarca) ? "" : ".") + filtroMarca + ".converted.zip";
-                    if (options.Salida == TipoSalida.csv)
+                    if (options.Salida == TipoSalida.date)
+                    {
+                        var rangoFechas = (from dbo in outputData select dbo.FecProceso).Distinct().OrderBy(FecProceso => FecProceso);
+                        foreach (var date in rangoFechas)
+                        {
+                            var dateFileName = filename + (string.IsNullOrWhiteSpace(filtroMarca) ? "" : ".") + filtroMarca + "." + date.Value.ToString("yyyyMMdd") + ".converted.tsv";
+                            outputEngine.WriteFile(dateFileName, outputData.Where(r => r.FecProceso == date));
+                        }
+                    }
+                    else if (options.Salida == TipoSalida.csv)
                     {
                         outFileName = Path.ChangeExtension(outFileName, "csv");
-                        outEngine.WriteFile(outFileName, s);
+                        outputEngine.WriteFile(outFileName, outputData);
                     }
                     else if (options.Salida == TipoSalida.zip)
                     {
@@ -108,17 +122,17 @@ namespace ConsoleDgtData
                                 ZipArchiveEntry readmeEntry = za.CreateEntry(fileNamePart);
                                 using (StreamWriter writer = new StreamWriter(readmeEntry.Open(), Encoding.GetEncoding(28591)))
                                 {
-                                    outEngine.WriteStream(writer, s);
+                                    outputEngine.WriteStream(writer, outputData);
                                 }
                             }
                         }
                     }
 
-                    Console.WriteLine("Proceso terminado. ");
-                    Console.WriteLine("Fichero de salida:  {0}", outFileName);
+                    Console.WriteLine("fichero procesado. {0}", stopWatch.ElapsedMilliseconds);
+                    stopWatch.Restart();
                 }
-                if (engine.ErrorManager.HasErrors) engine.ErrorManager.SaveErrors("errors.out");
 
+                if (inputEngine.ErrorManager.HasErrors) inputEngine.ErrorManager.SaveErrors("errors.out");
                 return 1;
             }
             catch (ConvertException e)

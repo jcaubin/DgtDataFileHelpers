@@ -42,7 +42,8 @@ namespace ConsoleDgtData
     public enum TipoSalida
     {
         zip,
-        csv
+        csv,
+        date
     }
 
 
